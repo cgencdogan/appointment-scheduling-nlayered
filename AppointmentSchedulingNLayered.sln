@@ -1,0 +1,67 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33829.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{24641F6D-C04E-4206-8891-0C0F91D5FFFD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B208F13B-A630-4E0D-9552-4DBE36A3A82F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppointmentSchedulingNLayered.Entities", "AppointmentSchedulingNLayered.Entities\AppointmentSchedulingNLayered.Entities.csproj", "{D0EA3B4B-F7AC-4F22-912D-2589BEB48E8F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppointmentSchedulingNLayered.DataAccess", "AppointmentSchedulingNLayered.DataAccess\AppointmentSchedulingNLayered.DataAccess.csproj", "{DCDD3ABC-A739-471B-8598-0744182E1449}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppointmentSchedulingNLayered.Business", "AppointmentSchedulingNLayered.Business\AppointmentSchedulingNLayered.Business.csproj", "{02A4CB0B-32E7-45BB-BCAD-B39D075DEE35}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppointmentSchedulingNLayered.WebAPI", "AppointmentSchedulingNLayered.WebAPI\AppointmentSchedulingNLayered.WebAPI.csproj", "{E8DD35C2-8D60-42B2-ADEA-DF47EEBB5127}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppointmentSchedulingNLayered.Common", "AppointmentSchedulingNLayered.Common\AppointmentSchedulingNLayered.Common.csproj", "{CA732BE3-EBCB-46EC-B324-1082D8E27372}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppointmentSchedulingNLayered.Tests", "AppointmentSchedulingNLayered.Tests\AppointmentSchedulingNLayered.Tests.csproj", "{61E5C38A-FCF9-4469-BA42-F6C1BFC1F0B3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D0EA3B4B-F7AC-4F22-912D-2589BEB48E8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0EA3B4B-F7AC-4F22-912D-2589BEB48E8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0EA3B4B-F7AC-4F22-912D-2589BEB48E8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0EA3B4B-F7AC-4F22-912D-2589BEB48E8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCDD3ABC-A739-471B-8598-0744182E1449}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCDD3ABC-A739-471B-8598-0744182E1449}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCDD3ABC-A739-471B-8598-0744182E1449}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCDD3ABC-A739-471B-8598-0744182E1449}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02A4CB0B-32E7-45BB-BCAD-B39D075DEE35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02A4CB0B-32E7-45BB-BCAD-B39D075DEE35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02A4CB0B-32E7-45BB-BCAD-B39D075DEE35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02A4CB0B-32E7-45BB-BCAD-B39D075DEE35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8DD35C2-8D60-42B2-ADEA-DF47EEBB5127}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8DD35C2-8D60-42B2-ADEA-DF47EEBB5127}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8DD35C2-8D60-42B2-ADEA-DF47EEBB5127}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8DD35C2-8D60-42B2-ADEA-DF47EEBB5127}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA732BE3-EBCB-46EC-B324-1082D8E27372}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA732BE3-EBCB-46EC-B324-1082D8E27372}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA732BE3-EBCB-46EC-B324-1082D8E27372}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA732BE3-EBCB-46EC-B324-1082D8E27372}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61E5C38A-FCF9-4469-BA42-F6C1BFC1F0B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61E5C38A-FCF9-4469-BA42-F6C1BFC1F0B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61E5C38A-FCF9-4469-BA42-F6C1BFC1F0B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61E5C38A-FCF9-4469-BA42-F6C1BFC1F0B3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D0EA3B4B-F7AC-4F22-912D-2589BEB48E8F} = {24641F6D-C04E-4206-8891-0C0F91D5FFFD}
+		{DCDD3ABC-A739-471B-8598-0744182E1449} = {24641F6D-C04E-4206-8891-0C0F91D5FFFD}
+		{02A4CB0B-32E7-45BB-BCAD-B39D075DEE35} = {24641F6D-C04E-4206-8891-0C0F91D5FFFD}
+		{E8DD35C2-8D60-42B2-ADEA-DF47EEBB5127} = {24641F6D-C04E-4206-8891-0C0F91D5FFFD}
+		{CA732BE3-EBCB-46EC-B324-1082D8E27372} = {24641F6D-C04E-4206-8891-0C0F91D5FFFD}
+		{61E5C38A-FCF9-4469-BA42-F6C1BFC1F0B3} = {B208F13B-A630-4E0D-9552-4DBE36A3A82F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FBC60218-404B-4D50-B7A8-D427D958BB09}
+	EndGlobalSection
+EndGlobal
