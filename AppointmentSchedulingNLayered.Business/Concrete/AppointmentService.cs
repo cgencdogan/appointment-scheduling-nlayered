@@ -1,11 +1,5 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using FluentValidation.Results;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AppointmentSchedulingNLayered.Business.Abstract;
 using AppointmentSchedulingNLayered.Business.Validation;
 using AppointmentSchedulingNLayered.DataAccess.Abstract.EntityFramework;
@@ -20,59 +14,92 @@ public class AppointmentService : IAppointmentService {
     private IAppointmentRepository _appointmentRepository;
     private readonly IMapper _mapper;
     private Session _session;
+    private readonly ICacheService _cacheService;
 
-    public AppointmentService(IAppointmentRepository appointmentRepository, IMapper mapper, SessionProvider sessionProvider) {
+    public AppointmentService(IAppointmentRepository appointmentRepository, IMapper mapper, SessionProvider sessionProvider, ICacheService cacheService) {
         _appointmentRepository = appointmentRepository;
         _mapper = mapper;
         _session = sessionProvider.Session;
+        _cacheService = cacheService;
     }
 
     public async Task<IDataResult<AppointmentDto>> AddAsync(AddAppointmentDto appointmentDto) {
         AppointmentValidator validator = new AppointmentValidator();
         await validator.ValidateAndThrowAsync(appointmentDto);
+
         var available = await _appointmentRepository.AppointmentTimeAvailableAsync(_mapper.Map<Appointment>(appointmentDto));
-        if (!available) {
+        if (!available)
             throw new AppointmentTimeNotAvailableException();
-        }
+
         var appointmentToBeAdded = _mapper.Map<Appointment>(appointmentDto);
         appointmentToBeAdded.CreatedById = Guid.Parse(_session.UserId);
+
         var addedAppointment = await _appointmentRepository.AddAsync(appointmentToBeAdded);
+
+        _cacheService.SetData($"appointment:{addedAppointment.Id}", addedAppointment);
+
         return new SuccessDataResult<AppointmentDto>(_mapper.Map<AppointmentDto>(addedAppointment), "Randevu oluşturuldu");
     }
 
     public async Task<IResult> DeleteAsync(Guid appointmentId) {
-        if (appointmentId == Guid.Empty) {
+        if (appointmentId == Guid.Empty)
             throw new NullAppointmentIdException();
-        }
-        Appointment appointment = await _appointmentRepository.GetAsync(a => a.Id == appointmentId);
-        if (appointment is null) {
+
+        var appointment = await _appointmentRepository.GetAsync(a => a.Id == appointmentId);
+
+        if (appointment is null)
             throw new AppointmentNotFoundException();
-        }
+
         await _appointmentRepository.DeleteAsync(appointment);
+
+        _cacheService.RemoveData($"appointment:{appointmentId}");
+
         return new SuccessResult("Randevu silindi");
     }
 
     public async Task<IDataResult<List<AppointmentDto>>> GetAllAsync() {
+        var cacheData = _cacheService.GetData<IEnumerable<Appointment>>("appointments");
+
+        if (cacheData is not null && cacheData.Count() > 0)
+            return new SuccessDataResult<List<AppointmentDto>>(_mapper.Map<List<AppointmentDto>>(cacheData), "Tüm randevular getirildi.");
+
         var appointments = (await _appointmentRepository.GetListAsync()).ToList();
-        if (appointments.Count <= 0 || appointments is null) {
+
+        if (appointments.Count <= 0 || appointments is null)
             throw new AppointmentNotFoundException();
-        }
+
+        _cacheService.SetData<IEnumerable<Appointment>>("appointments", appointments);
+
         return new SuccessDataResult<List<AppointmentDto>>(_mapper.Map<List<AppointmentDto>>(appointments), "Tüm randevular getirildi.");
     }
 
     public async Task<IDataResult<List<AppointmentDto>>> GetAllByPersonelIdAsync(Guid personnelId) {
+        var cacheData = _cacheService.GetData<IEnumerable<Appointment>>($"{personnelId}:appointments");
+        if (cacheData is not null && cacheData.Count() > 0)
+            return new SuccessDataResult<List<AppointmentDto>>(_mapper.Map<List<AppointmentDto>>(cacheData), "Belirtilen personele ait randevular getirildi.");
+
         var appointments = (await _appointmentRepository.GetListAsync(a => a.Personnel.Id == personnelId)).ToList();
-        if (appointments.Count <= 0 || appointments is null) {
+
+        if (appointments.Count <= 0 || appointments is null)
             throw new AppointmentNotFoundException();
-        }
+
+        _cacheService.SetData<IEnumerable<Appointment>>($"{personnelId}:appointments", appointments);
+
         return new SuccessDataResult<List<AppointmentDto>>(_mapper.Map<List<AppointmentDto>>(appointments), "Belirtilen personele ait randevular getirildi.");
     }
 
     public async Task<IDataResult<AppointmentDto>> GetByIdAsync(Guid appointmentId) {
-        Appointment appointment = await _appointmentRepository.GetAsync(a => a.Id == appointmentId);
-        if (appointment is null) {
+        var cacheData = _cacheService.GetData<Appointment>($"appointment:{appointmentId}");
+        if (cacheData is not null)
+            return new SuccessDataResult<AppointmentDto>(_mapper.Map<AppointmentDto>(cacheData), "Randevu getirildi.");
+
+        var appointment = await _appointmentRepository.GetAsync(a => a.Id == appointmentId);
+
+        if (appointment is null)
             throw new AppointmentNotFoundException();
-        }
+
+        _cacheService.SetData($"appointment:{appointmentId}", appointment);
+
         return new SuccessDataResult<AppointmentDto>(_mapper.Map<AppointmentDto>(appointment), "Randevu getirildi.");
     }
 
@@ -80,16 +107,17 @@ public class AppointmentService : IAppointmentService {
         AppointmentValidator validator = new AppointmentValidator();
         await validator.ValidateAndThrowAsync(appointmentDto);
 
-        if (!(await _appointmentRepository.AppointmentExistsAsync(appointmentDto.Id))) {
+        if (!(await _appointmentRepository.AppointmentExistsAsync(appointmentDto.Id)))
             throw new AppointmentNotFoundException();
-        }
 
-        var available = await _appointmentRepository.AppointmentTimeAvailableAsync(_mapper.Map<Appointment>(appointmentDto));
-        if (!available) {
+        bool timespanAvailable = await _appointmentRepository.AppointmentTimeAvailableAsync(_mapper.Map<Appointment>(appointmentDto));
+        if (!timespanAvailable)
             throw new AppointmentTimeNotAvailableException();
-        }
 
         var updated = await _appointmentRepository.UpdateAsync(_mapper.Map<Appointment>(appointmentDto));
+
+        _cacheService.SetData($"appointment:{updated.Id}", updated);
+
         return new SuccessDataResult<AppointmentDto>(_mapper.Map<AppointmentDto>(updated), "Randevu bilgileri güncellendi.");
     }
 }

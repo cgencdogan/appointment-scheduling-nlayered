@@ -1,3 +1,4 @@
+using AppointmentSchedulingNLayered.Business.Abstract;
 using AppointmentSchedulingNLayered.Business.Concrete;
 using AppointmentSchedulingNLayered.Business.Helpers;
 using AppointmentSchedulingNLayered.Common.DataTransferObjects;
@@ -17,6 +18,7 @@ public class AppointmentServiceTests {
     private readonly AppointmentService _sut;
     private readonly IMapper _mapper;
     private readonly Mock<IAppointmentRepository> _appointmentRepoMock;
+    private readonly Mock<ICacheService> _cacheServiceMock;
     private readonly Mock<SessionProvider> _sessionProviderMock;
     private readonly Mock<Session> _sessionMock;
 
@@ -24,11 +26,12 @@ public class AppointmentServiceTests {
         var mapperConfig = new MapperConfiguration(c => { c.AddProfile<ApplicationMapper>(); });
         _mapper = mapperConfig.CreateMapper();
         _appointmentRepoMock = new Mock<IAppointmentRepository>();
+        _cacheServiceMock = new Mock<ICacheService>();
         _sessionMock = new();
         _sessionMock.Setup(s => s.UserId).Returns(Guid.NewGuid().ToString());
         _sessionProviderMock = new();
         _sessionProviderMock.Setup(s => s.Session).Returns(_sessionMock.Object);
-        _sut = new AppointmentService(_appointmentRepoMock.Object, _mapper, _sessionProviderMock.Object);
+        _sut = new AppointmentService(_appointmentRepoMock.Object, _mapper, _sessionProviderMock.Object, _cacheServiceMock.Object);
     }
 
     [Fact]

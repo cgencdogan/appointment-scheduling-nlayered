@@ -29,4 +29,8 @@
     <ProjectReference Include="..\AppointmentSchedulingNLayered.Common\AppointmentSchedulingNLayered.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Logs\" />
+  </ItemGroup>
+
 </Project>
