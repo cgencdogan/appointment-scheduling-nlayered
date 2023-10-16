@@ -3,9 +3,9 @@
  * ***Microsoft SQL***
  * ***Entity Framework Core***
  * ***Redis***
- * ***Automapper***
- * ***Fluent Validation***
- * ***XUnit***
+ * ***AutoMapper***
+ * ***FluentValidation***
+ * ***xUnit***
  * ***Moq***
  * ***FluentAssertions***
  * ***Identity & JWT Bearer Tokens***
